@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A 公司供應商管理系統</title>
+    <link rel="stylesheet" href="/css/stock_summary.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <div class="banner"><h1>A 公司供應商管理系統</h1></div>
+      </header>
+      <div class="user-info">
+        <span>Hi 企業股</span>
+        <span>59:51後 <button id="btn-logout">登出</button></span>
+      </div>
+      <div class="main-layout">
+        <nav class="sidebar">
+          <ul>
+            <li><a href="/home.html">首頁</a></li>
+            <li>
+              <a href="/products.html" id="btn-product">新品提報</a>
+            </li>
+            <li>
+              <a href="/products_search.html" id="btn-product4">商品查詢</a>
+            </li>
+            <li>
+              <a href="/stock_summary.html" id="btn-stock">商品庫存查詢</a>
+            </li>
+            <li>
+              <a href="/stock_edit.html" id="btn-stock2">新增入/出庫單</a>
+            </li>
+
+            <li>
+              <a href="/register_sub.html" id="btn-accounts3">註冊子帳號</a>
+            </li>
+          </ul>
+        </nav>
+        <main class="content">
+          <nav class="breadcrumb">
+            <span>目前位置 &gt;</span>
+            <span id="breadcrumb-current"></span>
+          </nav>
+          <h1>商品庫存列表</h1>
+          <div class="search-form mb-3">
+            <input
+              type="text"
+              id="input-name"
+              class="form-control mr-2"
+              placeholder="輸入商品名稱"
+            />
+            <input
+              type="text"
+              id="input-barcode"
+              class="form-control mr-2"
+              placeholder="輸入商品條碼"
+            />
+            <button type="button" id="btn-search" class="btn btn-primary mr-2">
+              查詢
+            </button>
+            <button type="button" id="btn-clear" class="btn btn-secondary">
+              清除
+            </button>
+          </div>
+          <table id="stock-table">
+            <thead>
+              <tr>
+                <th>序號</th>
+                <th>商品名稱</th>
+                <th>規格</th>
+                <th>商品條碼</th>
+                <th>箱入數</th>
+                <th>單位</th>
+                <th>進貨量</th>
+                <th>銷貨量</th>
+                <th>庫存量</th>
+                <th>更新時間</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 動態資料插入 -->
+            </tbody>
+          </table>
+        </main>
+      </div>
+      <footer>版權所有 © 2025 A 公司供應商管理系統</footer>
+    </div>
+    <script src="/js/stock_summary.js" defer></script>
+    <script src="/js/logout.js" defer></script>
+    <!-- 麵包屑的 JS -->
+    <script src="/js/breadcrumb.js"></script>
+  </body>
+</html>

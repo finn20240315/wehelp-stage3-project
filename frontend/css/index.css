@@ -1,0 +1,140 @@
+html,
+body {
+  font-family: "Microsoft JhengHei", sans-serif;
+  background: #f2f6fa;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  height: 100%;
+}
+
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: #003366;
+  color: white;
+  text-align: start;
+  padding: 20px 0;
+}
+header h1 {
+  padding: 0 340px;
+  font-size: 40px;
+  margin: 5px;
+}
+
+.form,
+.auth-box {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form h2,
+.auth-box h2 {
+  margin: 0;
+  white-space: nowrap;
+  font-size: 18px;
+}
+
+.form input,
+.auth-box input,
+.auth-box select {
+  flex: 1 1 150px;
+  padding: 6px;
+  min-width: 0;
+}
+
+.form button,
+.auth-box button {
+  padding: 6px 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.logo {
+  height: 60px;
+  vertical-align: middle;
+}
+
+.subtitle {
+  margin-top: 5px;
+  font-style: italic;
+  font-size: 14px;
+}
+
+.login-box {
+  background: white;
+  padding: 20px;
+  margin: 20px auto 0 auto;
+  width: 100%;
+  max-width: 1020px;
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-box .form input {
+  display: block;
+  width: 90%;
+  margin: 10px auto;
+  padding: 8px;
+}
+
+.login-box .form button {
+  margin: 5px;
+  padding: 8px 16px;
+}
+
+.login-btn,
+.register-btn {
+  background-color: #3366cc;
+  color: white;
+  border: none;
+}
+
+.notice-section {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px auto;
+  max-width: 1200px;
+}
+
+.notice {
+  background: white;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.notice h3 {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.notice ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.notice li {
+  margin: 8px 0;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  background: #003366;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}

@@ -1,0 +1,188 @@
+/* style.css */
+
+body {
+  font-family: "微軟正黑體", sans-serif;
+  background-color: #f5f5f5;
+  padding: 20px;
+  margin: 0;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: #f4a51c;
+  color: white;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+td[style*="color:red"] {
+  font-weight: bold;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  font-family: "Microsoft JhengHei", sans-serif;
+  background: #f2f6fa;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  height: 100%;
+}
+
+.main-layout {
+  display: flex;
+  height: calc(100vh - 100px); /* 或者直接 flex:1; */
+}
+header {
+  height: 60px;
+  background: #003366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+header h1 {
+  padding: 10px;
+  font-size: 40px;
+  margin: 5px;
+}
+.user-info {
+  background-color: #0577d8;
+  color: white;
+  padding: 5px;
+  text-align: end;
+}
+/* Layout */
+.main-layout {
+  flex: 1; /* 撑满剩下垂直空间 */
+  display: flex;
+  overflow: hidden; /* 讓內部滚动 */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 180px;
+  background: #005599;
+  color: white;
+  padding: 0 10px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-self: start;
+  align-items: self-start;
+}
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.sidebar li {
+  padding: 8px 0;
+  cursor: pointer;
+}
+/* frontend/css/home.css */
+
+/* 側邊欄選單連結 */
+.sidebar ul li a {
+  display: block; /* 確保整行都可點 */
+  color: #fff; /* 白色文字 */
+  background: transparent; /* 透明底（或你喜歡的色） */
+  padding: 0.5rem 1rem; /* 內邊距 */
+  text-decoration: none; /* 取消底線 */
+  font-size: 1rem; /* 文字大小 */
+}
+
+/* hover／active 狀態 */
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background: #0078d4; /* 漂亮的亮藍色底 */
+  color: #fff; /* 文字維持白色 */
+}
+
+.sidebar li:hover {
+  text-decoration: underline;
+}
+.online-cs {
+  margin-top: 20px;
+  background: #0077cc;
+  padding: 10px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+/* Footer */
+footer {
+  background: #003366;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+/* 搜尋列：白底卡片、圓角、陰影 */
+.search-form {
+  background-color: #ffffff;
+  border: 1px solid #e3e6f0;
+  border-radius: 0.35rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* 同時控制按鈕與 input 間距 */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* 文字輸入框：一致圓角、邊框、內距 */
+.search-form input[type="text"] {
+  flex: 0 0 200px; /* 固定寬度，也可改成你想要的 */
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.35rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* 按鈕：一致圓角、邊框、內距、游標 */
+.search-form button {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.35rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+/* 查詢按鈕：主色調 */
+.search-form #btn-search {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+/* 清除按鈕：次色調 */
+.search-form #btn-clear {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #fff;
+}

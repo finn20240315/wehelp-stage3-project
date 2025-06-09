@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <title>A 公司供應商管理系統</title>
+    <link rel="stylesheet" href="/css/index.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <div class="banner">
+          <h1>A 公司供應商管理系統</h1>
+        </div>
+      </header>
+
+      <section class="login-box">
+        <div class="form" id="loginForm">
+          <h2>登入</h2>
+          <input type="text" id="login-account" placeholder="請輸入帳號" />
+          <input type="password" id="login-password" placeholder="請輸入密碼" />
+          <button class="login-btn" id="loginBtn">登入</button>
+        </div>
+        <div class="auth-box" id="register-box">
+          <h2>註冊</h2>
+          <input
+            type="email"
+            id="reg-email"
+            placeholder="請輸入電子信箱"
+            required
+          />
+          <input
+            type="password"
+            id="reg-password"
+            placeholder="請輸入密碼"
+            required
+          />
+          <select id="reg-type" required>
+            <option value="company">company</option>
+            <option value="vendor">vendor</option>
+          </select>
+
+          <button type="submit" class="register-btn" id="registerBtn">
+            註冊
+          </button>
+        </div>
+      </section>
+
+      <main class="notice-section">
+        <div class="notice">
+          <h3>民生用品</h3>
+          <ul>
+            <li>◼︎05/12資料已更新</li>
+            <li>◼︎4月25號上傳資料</li>
+            <li>◼︎114/05/02 更新</li>
+          </ul>
+        </div>
+
+        <div class="notice">
+          <h3>物流中心</h3>
+          <ul>
+            <li>◼︎114/5/9 更新</li>
+            <li>◼︎114/4/9 還原排程</li>
+            <li>◼︎E-HUB 請每日上傳</li>
+          </ul>
+        </div>
+
+        <div class="notice">
+          <h3>生鮮</h3>
+          <ul>
+            <li>◼︎114/05/09 更新</li>
+            <li>◼︎1140501~1140503 排程</li>
+            <li>◼︎114.06.06作廠作業時間</li>
+          </ul>
+        </div>
+      </main>
+
+      <footer>版權所有 © 2025 A 企業股份有限公司</footer>
+    </div>
+    <script src="/js/index.js" defer></script>
+  </body>
+</html>

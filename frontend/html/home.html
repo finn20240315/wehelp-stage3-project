@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A 公司供應商管理系統</title>
+    <link rel="stylesheet" href="/css/home.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <div class="banner"><h1>A 公司供應商管理系統</h1></div>
+      </header>
+      <div class="user-info">
+        <span>Hi 企業股</span>
+        <span>59:51後 <button id="btn-logout">登出</button></span>
+      </div>
+      <div class="main-layout">
+        <nav class="sidebar">
+          <ul>
+            <li><a href="/home.html">首頁</a></li>
+            <li>
+              <a href="/products.html" id="btn-product">新品提報</a>
+            </li>
+            <li>
+              <a href="/products_search.html" id="btn-product4">商品查詢</a>
+            </li>
+            <li>
+              <a href="/stock_summary.html" id="btn-stock">商品庫存查詢</a>
+            </li>
+            <li>
+              <a href="/stock_edit.html" id="btn-stock2">新增入/出庫單</a>
+            </li>
+
+            <li>
+              <a href="/register_sub.html" id="btn-accounts3">註冊子帳號</a>
+            </li>
+          </ul>
+        </nav>
+        <main class="content">
+          <nav class="breadcrumb">
+            <span>目前位置 &gt;</span>
+            <span id="breadcrumb-current"></span>
+          </nav>
+          <table class="notice-table">
+            <thead>
+              <tr>
+                <th>讀取狀態</th>
+                <th>訊息來源</th>
+                <th>公告文號</th>
+                <th>標題</th>
+                <th>公告日期</th>
+                <th>截止日期</th>
+              </tr>
+            </thead>
+            <tbody id="announcements-body">
+              <!-- 之後由 JS 動態插入 <tr> -->
+            </tbody>
+          </table>
+        </main>
+      </div>
+      <footer>版權所有 © 2025 A 公司供應商管理系統</footer>
+    </div>
+    <script src="/js/home.js" defer></script>
+    <script src="/js/logout.js" defer></script>
+    <!-- 麵包屑的 JS -->
+    <script src="/js/breadcrumb.js"></script>
+  </body>
+</html>

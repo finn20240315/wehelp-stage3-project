@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <title>A公司供應商管理系統</title>
+    <link rel="stylesheet" href="/css/stock_edit.css" />
+    <style>
+      /* 一開始都隱藏，讓 JS 決定要顯示哪一個 */
+      #barcode-select,
+      #inpBarcode {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <div class="banner"><h1>A 公司供應商管理系統</h1></div>
+      </header>
+      <div class="user-info">
+        <span>Hi 企業股</span>
+        <span>59:51後 <button id="btn-logout">登出</button></span>
+      </div>
+      <div class="main-layout">
+        <nav class="sidebar">
+          <ul>
+            <li><a href="/home.html">首頁</a></li>
+            <li>
+              <a href="/products.html" id="btn-product">新品提報</a>
+            </li>
+            <li>
+              <a href="/products_search.html" id="btn-product4">商品查詢</a>
+            </li>
+            <li>
+              <a href="/stock_summary.html" id="btn-stock">商品庫存查詢</a>
+            </li>
+            <li>
+              <a href="/stock_edit.html" id="btn-stock2">新增入/出庫單</a>
+            </li>
+
+            <li>
+              <a href="/register_sub.html" id="btn-accounts3">註冊子帳號</a>
+            </li>
+          </ul>
+        </nav>
+        <main class="content">
+          <nav class="breadcrumb">
+            <span>目前位置 &gt;</span>
+            <span id="breadcrumb-current"></span>
+          </nav>
+          <h1 id="page-title"></h1>
+          <div id="product-info"></div>
+          <form id="flow-form">
+            <!-- 單據類型 -->
+            <div>
+              <label for="flow-type">單據類型：</label>
+              <select id="flow-type">
+                <option value="入庫">入庫單</option>
+                <option value="出庫">出庫單</option>
+              </select>
+            </div>
+
+            <!-- 條碼下拉 (載入後端所有商品條碼) -->
+            <div>
+              <label for="barcode-select">商品條碼：</label>
+              <select id="barcode-select">
+                <option value="">請選擇條碼</option>
+              </select>
+              <input id="inpBarcode" type="text" readonly />
+            </div>
+
+            <!-- 自動帶入欄位 (只讀) -->
+            <div>
+              <label for="product-name">商品名稱：</label>
+              <input id="product-name" type="text" readonly />
+            </div>
+            <div>
+              <label for="product-spec">規格：</label>
+              <input id="product-spec" type="text" readonly />
+            </div>
+            <div>
+              <label for="pack-qty">箱入數：</label>
+              <input id="pack-qty" type="number" readonly />
+            </div>
+            <div>
+              <label for="unit">單位：</label>
+              <input id="unit" type="text" readonly />
+            </div>
+
+            <!-- 可輸入欄位 -->
+            <div>
+              <label for="quantity">進貨量：</label>
+              <input id="quantity" type="number" min="1" />
+            </div>
+            <div>
+              <label for="unit-price">單價：</label>
+              <input id="unit-price" type="number" min="0" step="0.01" />
+            </div>
+            <div>
+              <label for="amount">金額：</label>
+              <input id="amount" type="number" readonly />
+            </div>
+
+            <button type="submit">新增</button>
+          </form>
+        </main>
+      </div>
+      <footer>版權所有 © 2025 A 公司供應商管理系統</footer>
+    </div>
+    <script src="/js/logout.js" defer></script>
+    <!-- 麵包屑的 JS -->
+    <script src="/js/breadcrumb.js"></script>
+    <script src="/js/stock_edit.js"></script>
+  </body>
+</html>

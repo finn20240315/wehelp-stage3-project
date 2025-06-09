@@ -1,0 +1,43 @@
+/* 以下可依照你原先的 CSS 微調 */
+.search-form {
+  background-color: #f9f9f9;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.search-form label {
+  margin-right: 8px;
+  font-weight: bold;
+}
+.search-form .field-group {
+  margin-bottom: 8px;
+}
+.search-form .status-checkboxes label {
+  margin-right: 12px;
+  font-weight: normal;
+}
+.search-buttons {
+  margin-top: 12px;
+}
+.search-buttons button {
+  margin-right: 8px;
+}
+#conditions-summary {
+  margin: 12px 0;
+  color: #d33; /* 紅色文字，與截圖相似的警示色 */
+  font-size: 0.95rem;
+}
+#result-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+#result-table th,
+#result-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+#result-table th {
+  background-color: #f0f0f0;
+}

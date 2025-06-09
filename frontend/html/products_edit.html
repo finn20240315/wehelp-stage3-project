@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A 公司供應商管理系統</title>
+    <link rel="stylesheet" href="/css/products.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <div class="banner"><h1>A 公司供應商管理系統</h1></div>
+      </header>
+      <div class="user-info">
+        <span>Hi 企業股</span>
+        <span>59:51後 <button id="btn-logout">登出</button></span>
+      </div>
+      <div class="main-layout">
+        <nav class="sidebar">
+          <ul>
+            <li><a href="/home.html">首頁</a></li>
+            <li>
+              <a href="/products.html" id="btn-product">新品提報</a>
+            </li>
+            <li>
+              <a href="/products_search.html" id="btn-product4">商品查詢</a>
+            </li>
+            <li>
+              <a href="/stock_summary.html" id="btn-stock">商品庫存查詢</a>
+            </li>
+            <li>
+              <a href="/stock_edit.html" id="btn-stock2">新增入/出庫單</a>
+            </li>
+
+            <li>
+              <a href="/register_sub.html" id="btn-accounts3">註冊子帳號</a>
+            </li>
+          </ul>
+        </nav>
+        <main class="content">
+          <nav class="breadcrumb">
+            <span>目前位置 &gt;</span>
+            <span id="breadcrumb-current"></span>
+          </nav>
+
+          <section class="form-container">
+            <h2>填寫商品報價資訊</h2>
+            <form id="product-form">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="name">*新品名稱（含品牌）：</label>
+                  <textarea id="name" name="name" rows="1" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="spec">*規格：</label>
+                  <textarea id="spec" name="spec" rows="1" required></textarea>
+                </div>
+                <div class="form-group small-inputs">
+                  <label>*商品尺寸 (cm)：</label>
+                  <div>
+                    <input
+                      type="number"
+                      id="length"
+                      name="length"
+                      placeholder="長"
+                      step="0.01"
+                      required
+                    />
+                    <input
+                      type="number"
+                      id="width"
+                      name="width"
+                      placeholder="寬"
+                      step="0.01"
+                      required
+                    />
+                    <input
+                      type="number"
+                      id="height"
+                      name="height"
+                      placeholder="高"
+                      step="0.01"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="barcode">*國際條碼：</label>
+                  <input type="text" id="barcode" name="barcode" required />
+                </div>
+                <div class="form-group">
+                  <label for="origin_country">*產地：</label>
+                  <select id="origin_country" name="origin_country" required>
+                    <option value="TAIWANROC">TAIWANROC／中華民國</option>
+                  </select>
+                </div>
+                <div class="form-group small-inputs">
+                  <label>*商品效期：</label>
+                  <div>
+                    <input
+                      type="number"
+                      id="shelf_life_value"
+                      name="shelf_life_value"
+                      placeholder="數值"
+                      required
+                    />
+                    <select
+                      id="shelf_life_unit"
+                      name="shelf_life_unit"
+                      required
+                    >
+                      <option value="日">日</option>
+                      <option value="月">月</option>
+                      <option value="年">年</option>
+                    </select>
+                    <label
+                      ><input type="checkbox" id="no_expiry" name="no_expiry" />
+                      無效期</label
+                    >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="unit">*單位：</label>
+                  <input type="text" id="unit" name="unit" required />
+                </div>
+                <div class="form-group">
+                  <label for="pack_qty">*箱入數：</label>
+                  <input type="number" id="pack_qty" name="pack_qty" required />
+                </div>
+                <div class="form-group small-inputs">
+                  <label>*預計上架年月：</label>
+                  <div>
+                    <select
+                      id="launch_year"
+                      name="launch_year"
+                      required
+                    ></select>
+                    年
+                    <select
+                      id="launch_month"
+                      name="launch_month"
+                      required
+                    ></select>
+                    月
+                  </div>
+                </div>
+                <div class="form-group small-inputs">
+                  <label for="purchase_price">*原始進價：</label>
+                  <div>
+                    <input
+                      type="number"
+                      id="purchase_price"
+                      name="purchase_price"
+                      step="0.01"
+                      required
+                    />元
+                  </div>
+                </div>
+                <div class="form-group small-inputs">
+                  <label for="selling_price">*原始售價：</label>
+                  <div>
+                    <input
+                      type="number"
+                      id="selling_price"
+                      name="selling_price"
+                      step="0.01"
+                      required
+                    />元
+                  </div>
+                </div>
+                <div class="form-group small-inputs">
+                  <label for="gross_margin">*原始毛利：</label>
+                  <div>
+                    <input
+                      type="number"
+                      id="gross_margin"
+                      name="gross_margin"
+                      step="0.01"
+                      readonly
+                    />%
+                  </div>
+                </div>
+                <div class="form-group small-inputs">
+                  <label for="promo_purchase_price">*促銷進價：</label>
+                  <div>
+                    <input
+                      type="number"
+                      id="promo_purchase_price"
+                      name="promo_purchase_price"
+                      step="0.01"
+                      required
+                    />元
+                  </div>
+                </div>
+                <div class="form-group small-inputs">
+                  <label for="promo_selling_price">*促銷售價：</label>
+                  <div>
+                    <input
+                      type="number"
+                      id="promo_selling_price"
+                      name="promo_selling_price"
+                      step="0.01"
+                      required
+                    />元
+                  </div>
+                </div>
+                <div class="form-group small-inputs">
+                  <label for="promo_gross_margin">*促銷毛利：</label>
+                  <div>
+                    <input
+                      type="number"
+                      id="promo_gross_margin"
+                      name="promo_gross_margin"
+                      step="0.01"
+                      readonly
+                    />%
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit">儲存</button>
+                <button type="reset">重設</button>
+              </div>
+            </form>
+          </section>
+        </main>
+      </div>
+      <footer>版權所有 © 2025 A 公司供應商管理系統</footer>
+    </div>
+    <script src="/js/products_edit.js" defer></script>
+    <script src="/js/logout.js" defer></script>
+    <!-- 麵包屑的 JS -->
+    <script src="/js/breadcrumb.js"></script>
+  </body>
+</html>

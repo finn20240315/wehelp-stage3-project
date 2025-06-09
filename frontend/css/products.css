@@ -1,0 +1,223 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  font-family: "Microsoft JhengHei", sans-serif;
+  background: #f2f6fa;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.main-layout {
+  display: flex;
+  height: calc(100vh - 100px); /* 或者直接 flex:1; */
+}
+header {
+  height: 60px;
+  background: #003366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+header h1 {
+  padding: 10px;
+  font-size: 40px;
+  margin: 5px;
+}
+.user-info {
+  background-color: #0577d8;
+  color: white;
+  padding: 5px;
+  text-align: end;
+}
+/* Layout */
+.main-layout {
+  flex: 1; /* 撑满剩下垂直空间 */
+  display: flex;
+  overflow: hidden; /* 讓內部滚动 */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 180px;
+  background: #005599;
+  color: white;
+  padding: 0 10px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-self: start;
+  align-items: self-start;
+}
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.sidebar li {
+  padding: 8px 0;
+  cursor: pointer;
+}
+/* frontend/css/home.css */
+
+/* 側邊欄選單連結 */
+.sidebar ul li a {
+  display: block; /* 確保整行都可點 */
+  color: #fff; /* 白色文字 */
+  background: transparent; /* 透明底（或你喜歡的色） */
+  padding: 0.5rem 1rem; /* 內邊距 */
+  text-decoration: none; /* 取消底線 */
+  font-size: 1rem; /* 文字大小 */
+}
+
+/* hover／active 狀態 */
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background: #0078d4; /* 漂亮的亮藍色底 */
+  color: #fff; /* 文字維持白色 */
+}
+
+.sidebar li:hover {
+  text-decoration: underline;
+}
+.online-cs {
+  margin-top: 20px;
+  background: #0077cc;
+  padding: 10px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+/* Main Content */
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: #f1f5f9;
+  overflow-x: hidden;
+}
+.breadcrumb {
+  margin-bottom: 16px;
+  color: #555;
+  font-size: 14px;
+}
+.form-container {
+  max-width: 100%;
+  padding: 0 16px;
+}
+
+.notice-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.notice-table th,
+.notice-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 14px;
+}
+.notice-table th {
+  background: #f0a000;
+  color: white;
+}
+.notice-table .highlight {
+  background: #fff9c4;
+}
+.notice-table .unread {
+  color: red;
+  font-weight: bold;
+}
+.notice-table tbody tr:hover {
+  background: #f2f2f2;
+}
+
+/* Products Form */
+
+.form-container h2 {
+  background: #e28c00;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px 4px 0 0;
+  margin: -16px -16px 16px;
+}
+
+/* grid 兩欄 */
+.form-grid {
+  display: grid;
+  /* 最少一欄 320px，最多就是把欄位均分 */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px 24px;
+}
+
+/* 單一欄位 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* 小型輸入群組（尺寸、日期等） */
+.small-inputs > div {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.small-inputs input,
+.small-inputs select {
+  flex: 1 1 0; /* 可以收縮到 0 寬度 再分配剩餘空間 */
+  min-width: 0; /* 防止 flex 項目的最小內容撐爆容器 */
+}
+/* 六、極窄螢幕時一整欄 */
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* 按鈕區 */
+.form-actions {
+  grid-column: 1 / -1;
+  text-align: right;
+  margin-top: 16px;
+}
+.form-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.form-actions button[type="submit"] {
+  background: #28a745;
+  color: #fff;
+}
+.form-actions button[type="reset"] {
+  background: #6c757d;
+  color: #fff;
+}
+
+/* Footer */
+
+footer {
+  background: #003366;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
