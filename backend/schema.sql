@@ -208,3 +208,29 @@ ALTER TABLE stock_flows
     AFTER created_at,
   MODIFY created_at DATETIME NOT NULL
     DEFAULT CURRENT_TIMESTAMP;
+
+-- ✅ stock_flows 資料表加入單價 unit_price 欄位
+ALTER TABLE stock_flows ADD COLUMN unit_price DECIMAL(10,2) DEFAULT NULL;
+
+-- ✅ stock_in_orders 資料表加入單價 unit_price 欄位
+ALTER TABLE stock_in_orders ADD COLUMN unit_price DECIMAL(12,2) NULL;
+
+-- ✅ stock_out_orders 資料表加入單價 unit_price 欄位
+ALTER TABLE stock_out_orders ADD COLUMN unit_price DECIMAL(12,2) NULL;
+
+-- ✅ 在出庫單表加一欄 sale_price
+ALTER TABLE stock_out_orders
+  ADD COLUMN sale_price DECIMAL(10,2) NULL AFTER unit_price;
+
+-- ✅ 在入庫單表加一欄 sale_price
+ALTER TABLE stock_in_orders
+  ADD COLUMN sale_price DECIMAL(10,2) NULL AFTER unit_price;
+
+-- ✅ 在 stock_flows 表也加一欄 sale_price
+ALTER TABLE stock_flows
+  ADD COLUMN sale_price DECIMAL(10,2) NULL AFTER unit_price;
+
+-- ✅ 在 stock_flows 表也加一欄 sale_price
+ALTER TABLE stock_out_orders
+  DROP COLUMN unit_price,
+  DROP COLUMN sale_price;

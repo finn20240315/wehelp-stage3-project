@@ -4,55 +4,59 @@ body {
   background-color: #f5f7fa;
 }
 
-.container {
-  width: 100%;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background-color: white;
-  text-align: start;
+.form-container {
+  padding: 0 16px;
 }
 
-label {
-  display: inline-block;
-  width: 50%;
-  text-align: right;
-  margin-right: 10px;
+/* Products Form */
+.form-container h2 {
+  background: #e28c00;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px 4px 0 0;
+  margin: 20px 0;
+}
+/* grid 兩欄 */
+.form-grid {
+  display: grid;
+  /* 最少一欄 320px，最多就是把欄位均分 */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px 24px;
+}
+/* 單一欄位 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
   font-weight: bold;
+  margin-bottom: 4px;
 }
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-select {
-  width: 250px;
-  padding: 5px;
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 6px 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 14px;
 }
-
-button {
-  margin-left: 160px;
-  padding: 6px 12px;
-  background-color: #007bff;
+/* 按鈕區 */
+.form-actions {
+  grid-column: 1 / -1;
+  text-align: right;
+  margin-top: 16px;
+}
+.form-actions button {
+  padding: 8px 16px;
   border: none;
-  color: white;
   border-radius: 4px;
   cursor: pointer;
 }
-
-button:hover {
-  background-color: #0056b3;
+.form-actions button[type="submit"] {
+  background: #28a745;
+  color: #fff;
 }
-
-a.back-link {
-  display: block;
-  margin: 20px 0 0 160px;
-  color: #007bff;
-  text-decoration: none;
-}
-
-a.back-link:hover {
-  text-decoration: underline;
+.form-actions button[type="reset"] {
+  background: #6c757d;
+  color: #fff;
 }

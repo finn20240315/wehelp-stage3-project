@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <td>${p.purchase_price} 元</td>
           <td>${p.selling_price} 元</td>
           <td>${p.gross_margin}</td>
-          <td>${p.updated_at}</td>
+          <td>${formatDatetime(p.updated_at)}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -68,6 +68,17 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(err);
       alert("查詢失敗：" + err.message);
     }
+  }
+
+  function formatDatetime(dt) {
+    const date = new Date(dt);
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    const h = String(date.getHours()).padStart(2, "0");
+    const min = String(date.getMinutes()).padStart(2, "0");
+    const s = String(date.getSeconds()).padStart(2, "0");
+    return `${y}-${m}-${d} ${h}:${min}:${s}`;
   }
 
   // 綁定「查詢」按鈕

@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "products_edit.html": "新品修改",
     "products_search.html": "商品查詢",
     "stock_summary.html": "商品庫存查詢",
+    "stock_history.html": "入/出庫歷史查詢",
     // stock_edit.html 先不要在這裡寫
     "accounts.html": "帳號管理",
     "register_main.html": "註冊主帳號",

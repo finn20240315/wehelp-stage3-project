@@ -18,7 +18,7 @@
       <div class="main-layout">
         <nav class="sidebar">
           <ul>
-            <li><a href="/home.html">首頁</a></li>
+            <!-- <li><a href="/home.html">首頁</a></li> -->
             <li>
               <a href="/products.html" id="btn-product">新品提報</a>
             </li>
@@ -31,7 +31,9 @@
             <li>
               <a href="/stock_edit.html" id="btn-stock2">新增入/出庫單</a>
             </li>
-
+            <li>
+              <a href="/stock_history.html" id="btn-stock3">入/出庫歷史查詢</a>
+            </li>
             <li>
               <a href="/register_sub.html" id="btn-accounts3">註冊子帳號</a>
             </li>
@@ -43,11 +45,11 @@
             <span id="breadcrumb-current"></span>
           </nav>
           <section class="form-container">
-            <h2>填寫商品報價資訊</h2>
+            <h2>填寫商品資料</h2>
             <form id="product-form">
               <div class="form-grid">
                 <div class="form-group">
-                  <label for="name">*新品名稱（含品牌）：</label>
+                  <label for="name">*商品名稱（含品牌）：</label>
                   <textarea id="name" name="name" rows="1" required></textarea>
                 </div>
                 <div class="form-group">
@@ -90,7 +92,11 @@
                 <div class="form-group">
                   <label for="origin_country">*產地：</label>
                   <select id="origin_country" name="origin_country" required>
-                    <option value="TAIWANROC">TAIWANROC／中華民國</option>
+                    <option value="TAIWAN">TAIWAN／台灣</option>
+                    <option value="CHINA">CHINA／中國</option>
+                    <option value="JAPAN">JAPAN／日本</option>
+                    <option value="USA">USA／美國</option>
+                    <option value="KOREA">KOREA／韓國</option>
                   </select>
                 </div>
                 <div class="form-group small-inputs">

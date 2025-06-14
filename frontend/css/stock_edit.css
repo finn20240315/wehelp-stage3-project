@@ -1,60 +1,22 @@
-/* style.css */
+/* Combined CSS after removing duplicates */
 
-body {
-  font-family: "微軟正黑體", sans-serif;
-  background-color: #f5f5f5;
-  padding: 20px;
-  margin: 0;
-}
-
-h1 {
-  margin-bottom: 20px;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  background-color: white;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-}
-
-thead {
-  background-color: #f4a51c;
-  color: white;
-}
-
-th,
-td {
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  text-align: center;
-}
-
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-td[style*="color:red"] {
-  font-weight: bold;
-}
-
+/* Global Styles */
 * {
   box-sizing: border-box;
 }
+
 html,
 body {
-  font-family: "Microsoft JhengHei", sans-serif;
-  background: #f2f6fa;
+  font-family: "微軟正黑體", sans-serif;
+  background: #f2f6f9;
   margin: 0;
   padding: 0;
   color: #333;
   height: 100%;
+  overflow-x: hidden;
 }
 
-.main-layout {
-  display: flex;
-  height: calc(100vh - 100px); /* 或者直接 flex:1; */
-}
+/* Header */
 header {
   height: 60px;
   background: #003366;
@@ -68,17 +30,21 @@ header h1 {
   font-size: 40px;
   margin: 5px;
 }
+
+/* User Info Bar */
 .user-info {
   background-color: #0577d8;
   color: white;
   padding: 5px;
   text-align: end;
 }
-/* Layout */
+
+/* Main Layout */
 .main-layout {
-  flex: 1; /* 撑满剩下垂直空间 */
   display: flex;
-  overflow: hidden; /* 讓內部滚动 */
+  flex: 1;
+  height: calc(100vh - 100px);
+  overflow: hidden;
 }
 
 /* Sidebar */
@@ -101,25 +67,19 @@ header h1 {
   padding: 8px 0;
   cursor: pointer;
 }
-/* frontend/css/home.css */
-
-/* 側邊欄選單連結 */
 .sidebar ul li a {
-  display: block; /* 確保整行都可點 */
-  color: #fff; /* 白色文字 */
-  background: transparent; /* 透明底（或你喜歡的色） */
-  padding: 0.5rem 1rem; /* 內邊距 */
-  text-decoration: none; /* 取消底線 */
-  font-size: 1rem; /* 文字大小 */
+  display: block;
+  color: #fff;
+  background: transparent;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  font-size: 1rem;
 }
-
-/* hover／active 狀態 */
 .sidebar ul li a:hover,
 .sidebar ul li a.active {
-  background: #0078d4; /* 漂亮的亮藍色底 */
-  color: #fff; /* 文字維持白色 */
+  background: #0078d4;
+  color: #fff;
 }
-
 .sidebar li:hover {
   text-decoration: underline;
 }
@@ -131,14 +91,91 @@ header h1 {
   border-radius: 4px;
 }
 
-/* Footer */
-footer {
-  background: #003366;
-  color: white;
-  text-align: center;
+/* Content Area */
+.content {
+  flex: 1;
   padding: 20px;
+  overflow-y: auto;
+  background: #f1f5f9;
 }
-/* 搜尋列：白底卡片、圓角、陰影 */
+
+/* Breadcrumb */
+.breadcrumb {
+  margin-bottom: 16px;
+  color: #555;
+  font-size: 14px;
+}
+
+/* Forms */
+.form-container {
+  max-width: 100%;
+  padding: 0 16px;
+}
+.form-container h2 {
+  background: #e28c00;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px 4px 0 0;
+  /* margin: -16px -16px 16px; */
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px 24px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.small-inputs > div {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.small-inputs input,
+.small-inputs select {
+  flex: 1 1 0;
+  min-width: 0;
+}
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.form-actions {
+  grid-column: 1 / -1;
+  text-align: right;
+  margin-top: 16px;
+}
+.form-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.form-actions button[type="submit"] {
+  background: #28a745;
+  color: #fff;
+}
+.form-actions button[type="reset"] {
+  background: #6c757d;
+  color: #fff;
+}
+
+/* Search Form */
 .search-form {
   background-color: #ffffff;
   border: 1px solid #e3e6f0;
@@ -147,21 +184,17 @@ footer {
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* 同時控制按鈕與 input 間距 */
+  gap: 0.5rem;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
-
-/* 文字輸入框：一致圓角、邊框、內距 */
 .search-form input[type="text"] {
-  flex: 0 0 200px; /* 固定寬度，也可改成你想要的 */
+  flex: 0 0 200px;
   padding: 0.375rem 0.75rem;
   border: 1px solid #ced4da;
   border-radius: 0.35rem;
   font-size: 1rem;
   line-height: 1.5;
 }
-
-/* 按鈕：一致圓角、邊框、內距、游標 */
 .search-form button {
   padding: 0.375rem 0.75rem;
   border: 1px solid #ced4da;
@@ -172,17 +205,73 @@ footer {
   background-color: #f8f9fa;
   color: #212529;
 }
-
-/* 查詢按鈕：主色調 */
 .search-form #btn-search {
   background-color: #007bff;
   border-color: #007bff;
   color: #fff;
 }
-
-/* 清除按鈕：次色調 */
 .search-form #btn-clear {
   background-color: #6c757d;
   border-color: #6c757d;
   color: #fff;
 }
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+thead {
+  background-color: #f4a51c;
+  color: white;
+}
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: center;
+}
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Notice Table */
+.notice-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.notice-table th,
+.notice-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 14px;
+}
+.notice-table th {
+  background: #f0a000;
+  color: white;
+}
+.notice-table .highlight {
+  background: #fff9c4;
+}
+.notice-table .unread {
+  color: red;
+  font-weight: bold;
+}
+.notice-table tbody tr:hover {
+  background: #f2f2f2;
+}
+
+/* Footer */
+footer {
+  background: #003366;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.hidden { display: none !important; }

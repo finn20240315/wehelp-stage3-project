@@ -199,22 +199,18 @@ def get_product(product_id: int) -> Any:
                 width,
                 height,
                 barcode,
-            
                 origin_country,
                 shelf_life_unit,
                 shelf_life_value,
-                
                 pack_qty,
                 unit,
                 launch_date,
                 purchase_price,
                 selling_price,
                 gross_margin,
-
                 promo_purchase_price,
                 promo_selling_price,
-                promo_gross_margin,
-                       
+                promo_gross_margin,                       
                 created_at,
                 updated_at
             FROM products

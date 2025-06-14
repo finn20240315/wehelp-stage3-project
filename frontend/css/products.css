@@ -35,12 +35,6 @@ header h1 {
   padding: 5px;
   text-align: end;
 }
-/* Layout */
-.main-layout {
-  flex: 1; /* 撑满剩下垂直空间 */
-  display: flex;
-  overflow: hidden; /* 讓內部滚动 */
-}
 
 /* Sidebar */
 .sidebar {
@@ -81,17 +75,6 @@ header h1 {
   color: #fff; /* 文字維持白色 */
 }
 
-.sidebar li:hover {
-  text-decoration: underline;
-}
-.online-cs {
-  margin-top: 20px;
-  background: #0077cc;
-  padding: 10px;
-  text-align: center;
-  border-radius: 4px;
-}
-
 /* Main Content */
 .content {
   flex: 1;
@@ -101,51 +84,20 @@ header h1 {
   overflow-x: hidden;
 }
 .breadcrumb {
-  margin-bottom: 16px;
   color: #555;
   font-size: 14px;
 }
 .form-container {
-  max-width: 100%;
   padding: 0 16px;
 }
 
-.notice-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-.notice-table th,
-.notice-table td {
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  text-align: left;
-  font-size: 14px;
-}
-.notice-table th {
-  background: #f0a000;
-  color: white;
-}
-.notice-table .highlight {
-  background: #fff9c4;
-}
-.notice-table .unread {
-  color: red;
-  font-weight: bold;
-}
-.notice-table tbody tr:hover {
-  background: #f2f2f2;
-}
-
 /* Products Form */
-
 .form-container h2 {
   background: #e28c00;
   color: #fff;
   padding: 8px;
   border-radius: 4px 4px 0 0;
-  margin: -16px -16px 16px;
+  /* margin: -16px -16px 16px; */
 }
 
 /* grid 兩欄 */

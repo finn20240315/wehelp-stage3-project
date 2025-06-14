@@ -20,19 +20,49 @@ document.addEventListener("DOMContentLoaded", async () => {
   const inpPack = document.getElementById("pack-qty");
   const inpUnit = document.getElementById("unit");
   const selType = document.getElementById("flow-type");
-  const inpQty = document.getElementById("quantity");
-  const inpPrice = document.getElementById("unit-price");
-  const inpAmount = document.getElementById("amount");
   const form = document.getElementById("flow-form");
 
-  // calcAmount 函式
-  function calcAmount() {
-    const q = parseFloat(inpQty.value) || 0;
-    const p = parseFloat(inpPrice.value) || 0;
-    inpAmount.value = (q * p).toFixed(2);
+  // 3）「入庫」欄位 refs
+  const inQty = document.getElementById("in-quantity");
+  const inPrice = document.getElementById("in-price");
+  const inAmt = document.getElementById("in-amount");
+  // 4）「出庫」欄位 refs
+  const outQty = document.getElementById("out-quantity");
+  const outPrice = document.getElementById("out-price");
+  const outAmt = document.getElementById("out-amount");
+
+  // 5）根據入／出庫顯示不同欄位
+  function toggleBlocks() {
+    const isIn = selType.value === "入庫";
+
+    document.querySelectorAll(".in-block").forEach((el) => {
+      el.classList.toggle("hidden", !isIn);
+    });
+    document.querySelectorAll(".out-block").forEach((el) => {
+      el.classList.toggle("hidden", isIn);
+    });
   }
-  inpQty.addEventListener("input", calcAmount);
-  inpPrice.addEventListener("input", calcAmount);
+
+  selType.addEventListener("change", toggleBlocks);
+  toggleBlocks();
+
+  // 6）計算入庫成本
+  function calcIn() {
+    const cost =
+      (parseFloat(inQty.value) || 0) * (parseFloat(inPrice.value) || 0);
+    inAmt.value = cost > 0 ? cost.toFixed(2) : "";
+  }
+  inQty.addEventListener("input", calcIn);
+  inPrice.addEventListener("input", calcIn);
+
+  // 7）計算出庫收入
+  function calcOut() {
+    const revenue =
+      (parseFloat(outQty.value) || 0) * (parseFloat(outPrice.value) || 0);
+    outAmt.value = revenue > 0 ? revenue.toFixed(2) : "";
+  }
+  outQty.addEventListener("input", calcOut);
+  outPrice.addEventListener("input", calcOut);
 
   // 如果 URL 有 product_id → 單一模式
   if (pid) {
@@ -59,9 +89,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     inpSpec.value = product.spec || "";
     inpPack.value = product.pack_qty || "";
     inpUnit.value = product.unit || "";
-    inpPrice.value = product.purchase_price ?? "";
+    inPrice.value = product.purchase_price.toFixed(2); // 进价
+    outPrice.value = product.selling_price.toFixed(2); // 售价
 
-    calcAmount();
+    // 一開始先算一次
+    calcIn();
+    calcOut();
   } else {
     // 無 product_id → 下拉選單模式
     selBarcode.style.display = "inline-block";
@@ -94,8 +127,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       inpSpec.value = prod.spec || "";
       inpPack.value = prod.pack_qty || "";
       inpUnit.value = prod.unit || "";
-      inpPrice.value = prod.purchase_price || "";
-      calcAmount();
+      inPrice.value = prod.purchase_price?.toFixed(2) || "";
+      outPrice.value = prod.selling_price?.toFixed(2) || "";
+      calcIn();
+      calcOut();
     });
   }
 
@@ -107,14 +142,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const type = selType.value; // 入庫 or 出庫
     const product_id = pid ? +pid : +selBarcode.value;
-    const quantity = +inpQty.value;
+    // ▶️ 这里不要再用 inQty 一律取值了，改成根据类型分别取
+    let quantity, unit_price;
+    if (type === "入庫") {
+      quantity = +inQty.value; // 进货量
+      unit_price = +inPrice.value; // 进价
+    } else {
+      quantity = +outQty.value; // 销货量
+      unit_price = +outPrice.value; // 售价
+    }
+
+    const payload = {
+      product_id,
+      quantity,
+      unit_price,
+      unit: inpUnit.value || null,
+      status: type === "入庫" ? "已入庫" : "已出庫",
+    };
+
+    console.log("✅ payload >", payload);
+
     const url = type === "入庫" ? "/api/stock/in" : "/api/stock/out";
-    const payload =
-      type === "入庫"
-        ? { product_id, quantity, status: "已入庫" }
-        : { product_id, quantity, status: "已出庫" };
-    console.log("✅ payload >", { product_id, quantity, status: type });
-    console.log("✅ POST to", url);
 
     try {
       const res = await fetch(url, {
@@ -134,11 +182,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("❌ res.ok false");
         throw new Error(`HTTP ${res.status}`);
       }
-      alert(`${type} 單建立成功`);
+      alert(`${type}單建立成功`);
       window.location.href = "/stock_summary.html";
     } catch (err) {
       console.error("🔥 submit error:", err);
-      alert(`${type} 單建立失敗：` + err.message);
+      alert(`${type}單建立失敗：` + err.message);
     }
   });
 });

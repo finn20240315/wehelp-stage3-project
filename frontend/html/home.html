@@ -18,7 +18,7 @@
       <div class="main-layout">
         <nav class="sidebar">
           <ul>
-            <li><a href="/home.html">首頁</a></li>
+            <!-- <li><a href="/home.html">首頁</a></li> -->
             <li>
               <a href="/products.html" id="btn-product">新品提報</a>
             </li>
@@ -31,7 +31,9 @@
             <li>
               <a href="/stock_edit.html" id="btn-stock2">新增入/出庫單</a>
             </li>
-
+            <li>
+              <a href="/stock_history.html" id="btn-stock3">入/出庫歷史查詢</a>
+            </li>
             <li>
               <a href="/register_sub.html" id="btn-accounts3">註冊子帳號</a>
             </li>
@@ -42,21 +44,25 @@
             <span>目前位置 &gt;</span>
             <span id="breadcrumb-current"></span>
           </nav>
-          <table class="notice-table">
-            <thead>
-              <tr>
-                <th>讀取狀態</th>
-                <th>訊息來源</th>
-                <th>公告文號</th>
-                <th>標題</th>
-                <th>公告日期</th>
-                <th>截止日期</th>
-              </tr>
-            </thead>
-            <tbody id="announcements-body">
-              <!-- 之後由 JS 動態插入 <tr> -->
-            </tbody>
-          </table>
+
+          <section class="content">
+            <h2>公告</h2>
+            <table class="notice-table">
+              <thead>
+                <tr>
+                  <th>讀取狀態</th>
+                  <th>訊息來源</th>
+                  <th>公告文號</th>
+                  <th>標題</th>
+                  <th>公告日期</th>
+                  <th>截止日期</th>
+                </tr>
+              </thead>
+              <tbody id="announcements-body">
+                <!-- 之後由 JS 動態插入 <tr> -->
+              </tbody>
+            </table>
+          </section>
         </main>
       </div>
       <footer>版權所有 © 2025 A 公司供應商管理系統</footer>

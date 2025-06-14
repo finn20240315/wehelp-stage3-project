@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("access_token", result.access_token);
         const payload = JSON.parse(atob(result.access_token.split(".")[1]));
         localStorage.setItem("user_role", payload.role);
-        window.location.href = "./home.html";
+        window.location.href = "./products_search.html";
       } else {
         alert(result.detail || result.message || "登入失敗");
       }

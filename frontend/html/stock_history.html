@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>A 公司供應商管理系統</title>
     <link rel="stylesheet" href="/css/products.css" />
-    <link rel="stylesheet" href="/css/products_search.css" />
+    <link rel="stylesheet" href="/css/stock_history.css" />
   </head>
   <body>
     <div class="wrapper">
@@ -47,7 +47,7 @@
           </nav>
 
           <section class="content">
-            <h2>商品查詢</h2>
+            <h2>入/出庫歷史查詢</h2>
 
             <div class="search-form">
               <input
@@ -70,8 +70,7 @@
               </button>
             </div>
 
-            <!-- 查詢結果表格 -->
-            <table id="result-table">
+            <table id="history-table">
               <thead>
                 <tr>
                   <th>序號</th>
@@ -80,15 +79,18 @@
                   <th>商品條碼</th>
                   <th>箱入數</th>
                   <th>單位</th>
-                  <th>上架日期</th>
+                  <th>單據類型</th>
+                  <th>進貨量</th>
                   <th>進價</th>
+                  <th>成本支出</th>
+                  <th>銷貨量</th>
                   <th>售價</th>
-                  <th>毛利</th>
-                  <th>更新時間</th>
+                  <th>銷售收入</th>
+                  <th>毛利額</th>
                 </tr>
               </thead>
               <tbody>
-                <!-- JS 會動態塞入 <tr> -->
+                <!-- 動態資料插入 -->
               </tbody>
             </table>
           </section>
@@ -96,7 +98,7 @@
       </div>
       <footer>版權所有 © 2025 A 公司供應商管理系統</footer>
     </div>
-    <script src="/js/products_search.js" defer></script>
+    <script src="/js/stock_history.js" defer></script>
     <script src="/js/logout.js" defer></script>
     <!-- 麵包屑的 JS -->
     <script src="/js/breadcrumb.js"></script>

@@ -1,11 +1,50 @@
-/* 以下可依照你原先的 CSS 微調 */
+/* 搜尋列：白底卡片、圓角、陰影 */
 .search-form {
-  background-color: #f9f9f9;
-  padding: 16px;
-  margin-bottom: 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  /* background-color: #ffffff;
+  border: 1px solid #e3e6f0;
+  border-radius: 0.35rem;
+  padding: 1rem; */
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* 同時控制按鈕與 input 間距 */
+  /* box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); */
 }
+/* 文字輸入框：一致圓角、邊框、內距 */
+.search-form input[type="text"] {
+  flex: 0 0 200px; /* 固定寬度，也可改成你想要的 */
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.35rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+/* 按鈕：一致圓角、邊框、內距、游標 */
+.search-form button {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.35rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+/* 查詢按鈕：主色調 */
+.search-form #btn-search {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+/* 清除按鈕：次色調 */
+.search-form #btn-clear {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #fff;
+}
+
 .search-form label {
   margin-right: 8px;
   font-weight: bold;
@@ -17,17 +56,11 @@
   margin-right: 12px;
   font-weight: normal;
 }
-.search-buttons {
-  margin-top: 12px;
+h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
 }
-.search-buttons button {
-  margin-right: 8px;
-}
-#conditions-summary {
-  margin: 12px 0;
-  color: #d33; /* 紅色文字，與截圖相似的警示色 */
-  font-size: 0.95rem;
-}
+/* 
 #result-table {
   width: 100%;
   border-collapse: collapse;
@@ -40,4 +73,31 @@
 }
 #result-table th {
   background-color: #f0f0f0;
+} */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: #f4a51c;
+  color: white;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+td[style*="color:red"] {
+  font-weight: bold;
 }

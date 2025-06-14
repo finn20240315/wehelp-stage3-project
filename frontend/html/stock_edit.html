@@ -24,7 +24,7 @@
       <div class="main-layout">
         <nav class="sidebar">
           <ul>
-            <li><a href="/home.html">首頁</a></li>
+            <!-- <li><a href="/home.html">首頁</a></li> -->
             <li>
               <a href="/products.html" id="btn-product">新品提報</a>
             </li>
@@ -37,7 +37,9 @@
             <li>
               <a href="/stock_edit.html" id="btn-stock2">新增入/出庫單</a>
             </li>
-
+            <li>
+              <a href="/stock_history.html" id="btn-stock3">入/出庫歷史查詢</a>
+            </li>
             <li>
               <a href="/register_sub.html" id="btn-accounts3">註冊子帳號</a>
             </li>
@@ -48,61 +50,87 @@
             <span>目前位置 &gt;</span>
             <span id="breadcrumb-current"></span>
           </nav>
-          <h1 id="page-title"></h1>
-          <div id="product-info"></div>
-          <form id="flow-form">
-            <!-- 單據類型 -->
-            <div>
-              <label for="flow-type">單據類型：</label>
-              <select id="flow-type">
-                <option value="入庫">入庫單</option>
-                <option value="出庫">出庫單</option>
-              </select>
-            </div>
+          <section class="form-container">
+            <h2 id="page-title"></h2>
+            <form id="flow-form">
+              <div class="form-grid">
+                <!-- 單據類型 -->
+                <div class="form-group">
+                  <label for="flow-type">單據類型：</label>
+                  <select id="flow-type">
+                    <option value="入庫">入庫單</option>
+                    <option value="出庫">出庫單</option>
+                  </select>
+                </div>
+                <!-- 條碼下拉 (載入後端所有商品條碼) -->
+                <div class="form-group">
+                  <label for="barcode-select">商品條碼：</label>
+                  <select id="barcode-select">
+                    <option value="">請選擇條碼</option>
+                  </select>
+                  <input id="inpBarcode" type="text" readonly />
+                </div>
+                <!-- 自動帶入欄位 (只讀) -->
+                <div class="form-group">
+                  <label for="product-name">商品名稱：</label>
+                  <input id="product-name" type="text" readonly />
+                </div>
+                <div class="form-group">
+                  <label for="product-spec">規格：</label>
+                  <input id="product-spec" type="text" readonly />
+                </div>
+                <div class="form-group">
+                  <label for="pack-qty">箱入數：</label>
+                  <input id="pack-qty" type="number" readonly />
+                </div>
+                <div class="form-group">
+                  <label for="unit">單位：</label>
+                  <input id="unit" type="text" readonly />
+                </div>
 
-            <!-- 條碼下拉 (載入後端所有商品條碼) -->
-            <div>
-              <label for="barcode-select">商品條碼：</label>
-              <select id="barcode-select">
-                <option value="">請選擇條碼</option>
-              </select>
-              <input id="inpBarcode" type="text" readonly />
-            </div>
+                <!-- 入庫單可輸入欄位 -->
+                <div class="form-group in-block">
+                  <label for="in-quantity">進貨量：</label>
+                  <input id="in-quantity" type="number" min="1" />
+                </div>
+                <div class="form-group in-block">
+                  <label for="in-price">進價：</label>
+                  <input
+                    id="in-price"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+                <div class="form-group in-block">
+                  <label for="in-amount">成本支出：</label>
+                  <input id="in-amount" type="number" readonly />
+                </div>
 
-            <!-- 自動帶入欄位 (只讀) -->
-            <div>
-              <label for="product-name">商品名稱：</label>
-              <input id="product-name" type="text" readonly />
-            </div>
-            <div>
-              <label for="product-spec">規格：</label>
-              <input id="product-spec" type="text" readonly />
-            </div>
-            <div>
-              <label for="pack-qty">箱入數：</label>
-              <input id="pack-qty" type="number" readonly />
-            </div>
-            <div>
-              <label for="unit">單位：</label>
-              <input id="unit" type="text" readonly />
-            </div>
-
-            <!-- 可輸入欄位 -->
-            <div>
-              <label for="quantity">進貨量：</label>
-              <input id="quantity" type="number" min="1" />
-            </div>
-            <div>
-              <label for="unit-price">單價：</label>
-              <input id="unit-price" type="number" min="0" step="0.01" />
-            </div>
-            <div>
-              <label for="amount">金額：</label>
-              <input id="amount" type="number" readonly />
-            </div>
-
-            <button type="submit">新增</button>
-          </form>
+                <!-- 出庫單可輸入欄位 -->
+                <div class="form-group out-block">
+                  <label for="out-quantity">銷貨量：</label>
+                  <input id="out-quantity" type="number" min="1" />
+                </div>
+                <div class="form-group out-block">
+                  <label for="out-price">售價：</label>
+                  <input
+                    id="out-price"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+                <div class="form-group out-block">
+                  <label for="out-amount">銷售收入：</label>
+                  <input id="out-amount" type="number" readonly />
+                </div>
+                <div class="form-actions">
+                  <button type="submit">新增</button>
+                </div>
+              </div>
+            </form>
+          </section>
         </main>
       </div>
       <footer>版權所有 © 2025 A 公司供應商管理系統</footer>

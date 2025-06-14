@@ -97,24 +97,20 @@ header h1 {
 .sidebar li:hover {
   text-decoration: underline;
 }
-.online-cs {
-  margin-top: 20px;
-  background: #0077cc;
-  padding: 10px;
-  text-align: center;
-  border-radius: 4px;
-}
 
 /* Main Content */
+
+.breadcrumb {
+  /* margin-bottom: 20px; */
+  color: #555;
+  font-size: 14px;
+}
 .content {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
-}
-.breadcrumb {
-  margin-bottom: 10px;
-  color: #555;
-  font-size: 14px;
+  background: #f1f5f9;
+  overflow-x: hidden;
 }
 
 .notice-table {
@@ -127,7 +123,7 @@ header h1 {
 .notice-table td {
   border: 1px solid #ccc;
   padding: 8px 12px;
-  text-align: left;
+  text-align: center;
   font-size: 14px;
 }
 .notice-table th {
