@@ -57,6 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
   registerBtn.addEventListener("click", async (e) => {
     e.preventDefault();
 
+    if (!regEmailInput.checkValidity()) {
+      return alert("請輸入有效的 Email (例如:foo@example.com)");
+    }
+
     const email = regEmailInput.value.trim();
     const password = regPwdInput.value.trim();
     const type = regTypeSelect.value;
@@ -66,9 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const payload = {
-      email: regEmailInput.value,
-      password: regPwdInput.value,
-      type: regTypeSelect.value,
+      email: regEmailInput.value.trim(),
+      password: regPwdInput.value.trim(),
+      type: regTypeSelect.value.trim(),
     };
     try {
       const res = await fetch("/api/register_main", {
@@ -79,8 +83,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.detail || data.message || "註冊失敗");
-        return;
+        // 1) detail 是陣列就 map；2) detail 是字串就自己包一個；3) fallback
+        let msgs = [];
+        if (Array.isArray(data.detail)) {
+          msgs = data.detail.map((e) => e.msg);
+        } else if (typeof data.detail === "string") {
+          msgs = [data.detail];
+        } else if (data.message) {
+          msgs = [data.message];
+        } else {
+          msgs = ["註冊失敗"];
+        }
+        return alert(msgs.join("\n"));
       }
 
       alert(
