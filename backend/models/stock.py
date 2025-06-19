@@ -3,6 +3,8 @@
 from pydantic import BaseModel
 from typing import Literal,Optional
 from datetime import datetime
+from decimal import Decimal
+
 
 class StockInCreate(BaseModel):
     product_id: int
@@ -43,3 +45,9 @@ class StockHistoryRecord(BaseModel):
     out_price: Optional[float] = None               
     stock_after: Optional[int]
     created_at: str       # 格式化時間字串
+
+class StockHistoryUpdate(BaseModel):
+    change_type: Literal["入庫", "出庫"]
+    change_qty: int
+    in_price: Optional[Decimal] = None
+    out_price: Optional[Decimal] = None

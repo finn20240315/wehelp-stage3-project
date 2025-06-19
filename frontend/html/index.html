@@ -9,25 +9,35 @@
     <div class="wrapper">
       <header>
         <div class="banner">
-          <h1>A 公司供應商管理系統</h1>
+          <h1>A 公 司 供 應 商 管 理 系 統</h1>
         </div>
       </header>
 
       <section class="login-box">
         <div class="form" id="loginForm">
-          <h2>登入</h2>
+          <h2>登入系統</h2>
           <input type="text" id="login-account" placeholder="請輸入帳號" />
+          <input
+            type="email"
+            id="login-email"
+            placeholder="請輸入電子信箱"
+            required
+          />
           <input type="password" id="login-password" placeholder="請輸入密碼" />
           <button class="login-btn" id="loginBtn">登入</button>
         </div>
+      </section>
+      <section class="login-box">
         <div class="auth-box" id="register-box">
-          <h2>註冊</h2>
+          <h2>註冊系統</h2>
           <input
             type="email"
             id="reg-email"
             placeholder="請輸入電子信箱"
             required
           />
+          <button class="login-btn" id="send-code-btn">取得驗證碼</button>
+          <input type="text" id="reg-code" placeholder="請輸入驗證碼" />
           <input
             type="password"
             id="reg-password"

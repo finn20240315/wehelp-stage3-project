@@ -191,3 +191,13 @@ footer {
   border-color: #6c757d;
   color: #fff;
 }
+
+.edit-link {
+  background-color: #007bff;
+  border: 1px solid #007bff;
+  color: #fff;
+  text-decoration: none;      /* 去掉底線 */
+  padding: 0.25rem 0.5rem;     /* 跟按鈕差不多的內距 */
+  border-radius: 0.25rem;      /* 圓角 */
+  display: inline-block;       /* 讓 padding 生效 */
+}

@@ -95,9 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
               }</td>                        <!-- 規格：純文字 -->
 
           <td>
-            <a href="stock_edit.html?product_id=${row.product_id}" 
-              class="stock-link"
-            >
+           <a href="stock_history.html?product_id=${
+             row.product_id
+           }" class="stock-link">
+
               ${row.barcode || "-"}
             </a>
           </td>                        <!-- 規格 -->

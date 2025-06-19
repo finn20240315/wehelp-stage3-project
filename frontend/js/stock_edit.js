@@ -3,14 +3,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("access_token");
   const params = new URLSearchParams(window.location.search);
   const pid = params.get("product_id");
+  const histId = params.get("history_id"); // ← 新增
   console.log("✅ stock_edit loaded; product_id =", pid);
-
-  // 依有沒有 product_id 來決定這頁的「新增／編輯」字眼
-  const pageLabel = pid ? "編輯入／出庫單" : "新增入／出庫單";
 
   // 設定 <h1 id="page-title">
   const h1 = document.getElementById("page-title");
-  if (h1) h1.textContent = pageLabel;
 
   // DOM refs
   const selBarcode = document.getElementById("barcode-select");
@@ -79,22 +76,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
       if (!res.ok) throw new Error(res.status);
       product = await res.json();
+
+      // 2. 填值
+      inpBarcode.value = product.barcode || "";
+      inpName.value = product.name || "";
+      inpSpec.value = product.spec || "";
+      inpPack.value = product.pack_qty || "";
+      inpUnit.value = product.unit || "";
+      inPrice.value = product.purchase_price.toFixed(2); // 进价
+      outPrice.value = product.selling_price.toFixed(2); // 售价
+
+      // 一開始先算一次
+      calcIn();
+      calcOut();
     } catch (e) {
       return alert("無法取得商品資料");
     }
-
-    // 2. 填值
-    inpBarcode.value = product.barcode || "";
-    inpName.value = product.name || "";
-    inpSpec.value = product.spec || "";
-    inpPack.value = product.pack_qty || "";
-    inpUnit.value = product.unit || "";
-    inPrice.value = product.purchase_price.toFixed(2); // 进价
-    outPrice.value = product.selling_price.toFixed(2); // 售价
-
-    // 一開始先算一次
-    calcIn();
-    calcOut();
   } else {
     // 無 product_id → 下拉選單模式
     selBarcode.style.display = "inline-block";
@@ -133,6 +130,43 @@ document.addEventListener("DOMContentLoaded", async () => {
       calcOut();
     });
   }
+  // —— 編輯歷史紀錄 ——
+  const titleEl = document.getElementById("page-title");
+  if (histId) {
+    titleEl.textContent = "編輯入／出庫歷史";
+  } else if (pid) {
+    titleEl.textContent = "新增入／出庫單";
+  } else {
+    titleEl.textContent = "請先選擇商品";
+  }
+  // 2) 取出歷史資料並填到表單
+  if (histId) {
+    try {
+      const rh = await fetch(`/api/stock/history?history_id=${histId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!rh.ok) throw new Error(rh.status);
+      const list = await rh.json();
+      if (!list.length) throw new Error("找不到該歷史");
+      const rec = list[0];
+      // 填表單：直接用後端傳回的中文 '入庫' / '出庫'
+      selType.value = rec.change_type;
+      toggleBlocks();
+
+      // 依照類型填數量＋價格
+      if (rec.change_type === "入庫") {
+        inQty.value = rec.change_qty;
+        inPrice.value = rec.in_price.toFixed(2);
+        calcIn();
+      } else {
+        outQty.value = rec.change_qty;
+        outPrice.value = rec.out_price.toFixed(2);
+        calcOut();
+      }
+    } catch {
+      return alert("無法取得該入／出庫歷史");
+    }
+  }
 
   // 共用：送出入/出庫
   form.addEventListener("submit", async (e) => {
@@ -141,7 +175,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault(); // ← 一定要加，停掉瀏覽器預設提交
 
     const type = selType.value; // 入庫 or 出庫
-    const product_id = pid ? +pid : +selBarcode.value;
+    const product_id = +pid || +selBarcode.value;
     // ▶️ 这里不要再用 inQty 一律取值了，改成根据类型分别取
     let quantity, unit_price;
     if (type === "入庫") {
@@ -152,41 +186,45 @@ document.addEventListener("DOMContentLoaded", async () => {
       unit_price = +outPrice.value; // 售价
     }
 
+    // 不要送 product_id
     const payload = {
-      product_id,
-      quantity,
-      unit_price,
-      unit: inpUnit.value || null,
-      status: type === "入庫" ? "已入庫" : "已出庫",
+      change_type: selType.value, // "入庫" or "出庫"
+      change_qty: +(selType.value === "入庫" ? inQty.value : outQty.value),
+      ...(selType.value === "入庫"
+        ? { in_price: +inPrice.value }
+        : { out_price: +outPrice.value }),
     };
 
-    console.log("✅ payload >", payload);
-
-    const url = type === "入庫" ? "/api/stock/in" : "/api/stock/out";
+    // 決定 URL 與 method
+    let url, method;
+    if (histId) {
+      url = `/api/stock/history/${histId}`;
+      method = "PUT";
+    } else {
+      url = type === "入庫" ? "/api/stock/in" : "/api/stock/out";
+      method = "POST";
+    }
 
     try {
-      const res = await fetch(url, {
-        method: "POST",
+      const rs = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
-
-      console.log("✅ fetch resolved, status =", res.status);
-      const text = await res.text();
-      console.log("✅ response text:", text);
-
-      if (!res.ok) {
-        console.error("❌ res.ok false");
-        throw new Error(`HTTP ${res.status}`);
+      if (!rs.ok) throw new Error(rs.status);
+      alert(histId ? "更新成功" : `${type}單建立成功`);
+      // 更新完，帶回 history 列表或 summary
+      if (histId) {
+        window.location.href = `stock_history.html?product_id=${pid}`;
+      } else {
+        window.location.href = "/stock_summary.html";
       }
-      alert(`${type}單建立成功`);
-      window.location.href = "/stock_summary.html";
     } catch (err) {
-      console.error("🔥 submit error:", err);
-      alert(`${type}單建立失敗：` + err.message);
+      console.error(err);
+      alert(histId ? "更新失敗" : "操作失敗：" + err.message);
     }
   });
 });

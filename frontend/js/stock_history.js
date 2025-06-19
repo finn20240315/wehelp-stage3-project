@@ -1,165 +1,100 @@
-document.addEventListener("DOMContentLoaded", () => {
+// stock_history.js
+document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("access_token");
   if (!token) {
     window.location.href = "/index.html";
     return;
   }
-  const payload = JSON.parse(atob(token.split(".")[1]));
-  console.log("✅ payload：", payload);
 
-  const dept = payload.department;
-
-  console.log("✅ 使用者部門：", dept);
-
-  // ✅ 各部門對應要顯示的功能 ID
-  const permissionMap = {
-    全部部門: [
-      "btn-product",
-      "btn-product2",
-      "btn-product3",
-      "btn-product4",
-      "btn-stock",
-      "btn-stock2",
-      "btn-stock3",
-      "btn-accounts",
-      "btn-accounts2",
-      "btn-accounts3",
-    ],
-    商品部: ["btn-product", "btn-product2", "btn-product3", "btn-product4"],
-    物流部: ["btn-stock", "btn-stock2", "btn-stock3"],
-    管理部: ["btn-accounts", "btn-accounts2", "btn-accounts3"],
-    // 其他部門可自行擴充
-  };
-
-  const allowedIds = permissionMap[dept] || [];
-  console.log("✅ allowedIds：", allowedIds);
-
-  allowedIds.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = "block";
-  });
-
-  const inpName = document.getElementById("input-name");
-  const inpBar = document.getElementById("input-barcode");
-  const btnSearch = document.getElementById("btn-search");
-  const btnClear = document.getElementById("btn-clear");
-  const tbody = document.querySelector("#history-table tbody");
-
-  async function loadHistory() {
-    try {
-      const params = new URLSearchParams();
-      if (inpName.value.trim())
-        params.append("product_name", inpName.value.trim());
-      if (inpBar.value.trim()) params.append("barcode", inpBar.value.trim());
-
-      const url =
-        "/api/stock/history" + (params.toString() ? `?${params}` : "");
-      let data = [];
-      try {
-        const res = await fetch(url, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        data = await res.json();
-      } catch (err) {
-        console.error("❌ 載入錯誤：", err);
-        return alert("查詢失敗：" + err.message);
-      }
-
-      tbody.innerHTML = ""; // 先清空表格
-
-      // 1. 按 product_id 分組
-      const groups = data.reduce((acc, row) => {
-        (acc[row.product_id] ||= []).push(row);
-        return acc;
-      }, {});
-
-      let seq = 1; // 用來做「序號」
-
-      // 2. 針對每組商品渲染
-      for (const pid in groups) {
-        const rows = groups[pid];
-        const first = rows[0];
-
-        // 2.1 第一列：商品基本資訊
-        const headerTr = document.createElement("tr");
-        headerTr.innerHTML = `
-              <td>${seq++}</td>
-              <td>${first.product_name}</td>
-              <td>${first.spec || "-"}</td>
-              <td>${first.barcode || "-"}</td>
-              <td>${first.pack_qty ?? "-"}</td>
-              <td>${first.unit || "-"}</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            `;
-        tbody.appendChild(headerTr);
-
-        // 2.2 中間列：該商品的每筆入／出庫
-        let totalProfit = 0;
-        for (const row of rows) {
-          const costSpent =
-            row.change_type === "入庫" ? row.change_qty * row.in_price : 0;
-          const saleQty = row.change_type === "出庫" ? row.change_qty : 0;
-          const salePrice = row.change_type === "出庫" ? row.out_price : 0;
-          const saleRevenue = saleQty * salePrice;
-          const profit = saleRevenue - costSpent;
-          totalProfit += profit;
-
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-                <td>${row.change_type}</td>
-                <td>${row.change_type === "入庫" ? row.change_qty : "-"}</td>
-                <td>${
-                  row.change_type === "入庫" ? row.in_price.toFixed(2) : "-"
-                }</td>
-                <td>${costSpent > 0 ? costSpent.toFixed(2) : "-"}</td>
-                <td>${saleQty > 0 ? saleQty : "-"}</td>
-                <td>${salePrice > 0 ? salePrice.toFixed(2) : "-"}</td>
-                <td>${saleRevenue > 0 ? saleRevenue.toFixed(2) : "-"}</td>
-                <td>-</td>
-              `;
-          tbody.appendChild(tr);
-        }
-
-        // 2.3 最後一列：該商品的毛利額總計
-        const subtotalTr = document.createElement("tr");
-        subtotalTr.innerHTML = `
-              <td colspan="13" style="text-align:right;font-weight:bold">
-                毛利額：
-              </td>
-              <td>${totalProfit.toFixed(2)}</td>
-            `;
-        tbody.appendChild(subtotalTr);
-      }
-    } catch (err) {
-      console.error("❌ 載入錯誤：", err);
-      alert("查詢失敗：" + err.message);
-    }
+  // 1. 取 URL 參數 product_id
+  const params = new URLSearchParams(window.location.search);
+  const pid = params.get("product_id");
+  if (!pid) {
+    return alert("請帶入 product_id 才能查詢歷史");
   }
 
-  btnSearch.addEventListener("click", () => {
-    loadHistory(inpName.value.trim(), inpBar.value.trim());
+  // 2. 顯示麵包屑
+  document.getElementById("breadcrumb-current").textContent =
+    "入／出庫歷史查詢";
+
+  // 3. 從後端拿該商品所有歷史
+  let rows = [];
+  try {
+    const res = await fetch(`/api/stock/history?product_id=${pid}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    rows = await res.json();
+  } catch (err) {
+    console.error("載入錯誤：", err);
+    return alert("查詢失敗：" + err.message);
+  }
+
+  // 4. 把資料 render 到 table
+  const tbody = document.querySelector("#history-table tbody");
+  tbody.innerHTML = "";
+  let totalProfit = 0;
+
+  rows.forEach((rec, i) => {
+    // 計算顯示值
+    const inQty = rec.change_type === "入庫" ? rec.change_qty : "-";
+    const inPrice = rec.in_price != null ? rec.in_price.toFixed(2) : "-";
+    const cost =
+      rec.change_type === "入庫"
+        ? (rec.change_qty * rec.in_price).toFixed(2)
+        : "-";
+
+    const outQty = rec.change_type === "出庫" ? rec.change_qty : "-";
+    const outPrice = rec.out_price != null ? rec.out_price.toFixed(2) : "-";
+    const revenue =
+      rec.change_type === "出庫"
+        ? (rec.change_qty * rec.out_price).toFixed(2)
+        : "-";
+
+    // 計算單筆毛利（數值）
+    const profitValue =
+      (rec.change_type === "出庫" ? rec.out_price * rec.change_qty : 0) -
+      (rec.change_type === "入庫" ? rec.in_price * rec.change_qty : 0);
+
+    totalProfit += profitValue;
+    const profitStr = profitValue.toFixed(2);
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td>${rec.product_name}</td>
+      <td>${rec.spec}</td>
+      <td>${rec.barcode}</td>
+      <td>${rec.pack_qty}</td>
+      <td>${rec.unit}</td>
+      <td>${rec.change_type}</td>
+      <td>${inQty}</td>
+      <td>${inPrice}</td>
+      <td>${cost}</td>
+      <td>${outQty}</td>
+      <td>${outPrice}</td>
+      <td>${revenue}</td>
+      <td>${profitStr}</td>
+      <td>
+        <a 
+          href="stock_edit.html?product_id=${pid}&history_id=${rec.id}"
+          class="edit-link btn"
+        >編輯</a>
+      </td>
+    `;
+    tbody.appendChild(tr);
   });
 
-  // 清除按鈕：清空欄位並顯示全部
-  btnClear.addEventListener("click", () => {
-    inpName.value = "";
-    inpBar.value = "";
-    loadHistory();
-  });
-
-  loadHistory();
+  // 5. 最後一列：總毛利額
+  const footerTr = document.createElement("tr");
+  footerTr.innerHTML = `
+    <td colspan="13" style="text-align:right;font-weight:bold">
+      總毛利額：
+    </td>
+    <td style="font-weight:bold;color:#007bff">
+      ${totalProfit.toFixed(2)}
+    </td>
+    <td></td>
+  `;
+  tbody.appendChild(footerTr);
 });

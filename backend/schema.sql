@@ -127,6 +127,13 @@ CREATE TABLE IF NOT EXISTS stock_flows (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- ✅ 新增信箱驗證資料表
+CREATE TABLE IF NOT EXISTS email_verifications (
+    email VARCHAR(255) NOT NULL PRIMARY KEY,
+    code VARCHAR(10) NOT NULL,
+    expires_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- ✅ 修改公告 announcements 資料表 的read 欄位
 ALTER TABLE `announcements`
   CHANGE COLUMN `read` `read_status` TINYINT(1) NOT NULL DEFAULT 0;
@@ -218,3 +225,4 @@ ALTER TABLE stock_flows
 ALTER TABLE stock_out_orders
   DROP COLUMN unit_price,
   DROP COLUMN sale_price;
+

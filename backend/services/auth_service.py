@@ -2,13 +2,13 @@ import datetime,os,jwt
 from passlib.context import CryptContext
 from backend.db_connector import get_connection
 from fastapi import HTTPException, status
+from pydantic import EmailStr
 
 pwd_context=CryptContext(schemes=["bcrypt"],deprecated="auto")
 # 建立一個 CryptContext 實例，指定雜湊演算法為 bcrypt，
 
 hashed = pwd_context.hash("456")
 # 把明文 "123" 轉成雜湊字串（含 salt），並存到 hashed
-print("✅ 雜湊過後的密碼 456：",hashed)
 # 建立一個 CryptContext 實例，指定雜湊演算法為 bcrypt，並讓過時演算法自動兼容
 
 SECRET_KEY=os.getenv("JWT_SECRET_KEY")
@@ -17,7 +17,6 @@ ALGORITHM="HS256"
 # 定義 JWT 簽名時要使用的演算法，此處為 HMAC-SHA256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 # 設定存取權杖的過期時間（分鐘），此處為 60 分鐘
-print("✅ JWT_SECRET_KEY =", os.getenv("JWT_SECRET_KEY"))
 
 
 # 註冊帳號邏輯
@@ -33,7 +32,7 @@ def get_next_main_code(cursor):
         WHERE main_code REGEXP '^c[0-9]+$'
     """)
     row = cursor.fetchone()
-    print("✅ row", row)
+    print("✅ row：", row)
 
     if row["max_code"]:
         max_num = int(row["max_code"][1:])  # "c1010" → 1010
@@ -165,7 +164,7 @@ def register_sub(req):
     return {"code": sub_code, "email": req.email, "department_id": req.department_id}
 
 # 登入帳號邏輯
-def authenticate(account: str, password: str):
+def authenticate(account: str, password: str,email:EmailStr):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
@@ -182,17 +181,25 @@ def authenticate(account: str, password: str):
         # 帳號不存在
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="此帳號未被註冊")
-
-    # 決定要查哪張表：main_accounts 或 sub_accounts
-    table = "main_accounts" if reg["type"] == "main" else "sub_accounts"
-
+    
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    if reg["type"] == "sub":
-        # 子帳號：把 sub_accounts 的 department_id JOIN 到 departments.name
+    if reg["type"] == "main":
+        cursor.execute("""
+            SELECT ma.id       AS id,
+                    ma.email    AS email,
+                    ma.password AS hashed_password,
+                    d.name      AS department
+            FROM main_accounts ma
+            LEFT JOIN departments d
+                ON d.id = 1
+            WHERE ma.id = %s
+        """, (reg["ref_id"],))
+    else:
         cursor.execute("""
             SELECT sa.id,
+                   sa.email,
                    sa.password AS hashed_password,
                    d.name AS department
             FROM sub_accounts sa
@@ -200,18 +207,6 @@ def authenticate(account: str, password: str):
               ON sa.department_id = d.id
             WHERE sa.id = %s
         """, (reg["ref_id"],))
-    else:
-        # 主帳號：直接把 departments.id = 1 (全部部門) 的 name 拿來當 department
-        cursor.execute("""
-            SELECT ma.id,
-                   ma.password AS hashed_password,
-                   d.name AS department
-            FROM main_accounts ma
-            LEFT JOIN departments d
-              ON d.id = 1
-            WHERE ma.id = %s
-        """, (reg["ref_id"],))
-
     user = cursor.fetchone()
     cursor.close()
     conn.close()
@@ -221,12 +216,18 @@ def authenticate(account: str, password: str):
         # 密碼驗證失敗
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="帳號或密碼錯誤")
+    # 4) 驗證 email
+    if user["email"] != email:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="信箱與帳號不符")
+
     # 3. 回傳給上層 (auth.py)：「id、account、role、department」
     return {
         "id": user["id"],
         "account": account,
         "role": reg["type"],      # "main" 或 "sub"
-        "department": user.get("department")  # 對 main 來說，這裡就是 "全部部門"
+        "department": user.get("department"),  # 對 main 來說，這裡就是 "全部部門"
+        "email": user["email"],
     }
 
 def create_access_token(data: dict):

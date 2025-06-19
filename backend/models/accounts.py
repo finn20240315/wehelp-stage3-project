@@ -1,11 +1,12 @@
 # backend/models/accounts.py
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from typing import Literal,Pattern
 
 class LoginRequest(BaseModel):
     account: str
     password: str
+    email:EmailStr
     # 定義 LoginRequest 資料模型，
     # 包含三個必要欄位：account（使用者帳號）、password（密碼）、captcha（驗證碼）。
 
@@ -28,9 +29,21 @@ class RegisterMainRequest(BaseModel):
     email: EmailStr
     password: str
     type: Literal["company", "vendor"]
+    verification_code: str = Field(
+        ...,
+        pattern=r"^\d{6}$",
+        description="6 位數字驗證碼",
+    )
     # 註冊主帳號時需要傳入的欄位：
     #   - email：合法 Email 格式
     #   - type：只能是 "company" 或 "vendor"
+
+class RegisterMainResponse(BaseModel):
+    code: str
+    email: EmailStr
+
+class SendCodeIn(BaseModel):
+    email: EmailStr
 
 class RegisterSubRequest(BaseModel):
     main_code: str        # 主帳完整代碼，例如 "c1001"
@@ -41,9 +54,3 @@ class RegisterSubRequest(BaseModel):
     #   - main_code：要把子帳掛在哪個主帳（例如 "c1001"）
     #   - email：合法 Email 格式
     #   - department_id：對應 departments 表內的某一筆 (e.g. 7 = 物流部)
-
-
-
-class RegisterMainResponse(BaseModel):
-    account: str
-    email: EmailStr

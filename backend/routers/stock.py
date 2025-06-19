@@ -1,10 +1,10 @@
 # backend/routers/stock.py
 
-from fastapi import APIRouter, HTTPException
-from backend.models.stock import StockInCreate,StockOutCreate,StockSummary
+from fastapi import APIRouter, HTTPException,Query,Path,Body
+from backend.models.stock import StockInCreate,StockOutCreate,StockSummary,StockHistoryUpdate
 from backend.db_connector import get_connection
 from typing import Optional,List
-from backend.models.stock import StockHistoryRecord  # ← 加這行
+from backend.models.stock import StockHistoryRecord 
 
 router = APIRouter(prefix="/api/stock", tags=["stock"])
 
@@ -144,8 +144,18 @@ def get_stock_summary(name: Optional[str]    = None,
         conn.close()
 
 
-@router.get("/history", response_model=List[StockHistoryRecord], summary="查詢入出庫歷史紀錄")
-def get_stock_history(product_name: Optional[str] = None,    barcode: Optional[str] = None):
+@router.get( "/history", response_model=List[StockHistoryRecord], summary="查詢入出庫歷史紀錄"
+)
+def get_stock_history(
+    product_id: Optional[int] = Query(
+        None, description="過濾特定商品 ID 的歷史"
+    ),
+    product_name: Optional[str] = None,
+    barcode: Optional[str] = None,
+    history_id: Optional[int] = Query(
+       None, description="指定要查的歷史紀錄ID"
+    ),
+):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
@@ -167,38 +177,91 @@ def get_stock_history(product_name: Optional[str] = None,    barcode: Optional[s
             FROM stock_flows f
             JOIN products p ON f.product_id = p.id
         """
-        conditions = []
-        params = []
-        if product_name:
-            conditions.append("p.name LIKE %s")
-            params.append(f"%{product_name}%")
-        if barcode:
-            conditions.append("p.barcode LIKE %s")
-            params.append(f"%{barcode}%")
-        if conditions:
-            sql += " WHERE " + " AND ".join(conditions)
+        params: List = []
+
+        # 1) 若傳入 history_id → 只查那一筆
+        if history_id is not None:
+            sql += " WHERE f.id = %s"
+            params.append(history_id)
+        else:
+            # 2) 若傳入 product_id → 過濾同一個商品的所有歷史
+            conds = []
+            if product_id is not None:
+                conds.append("f.product_id = %s")
+                params.append(product_id)
+            # 3) name / barcode 搜尋也保留
+            if product_name:
+                conds.append("p.name LIKE %s")
+                params.append(f"%{product_name}%")
+            if barcode:
+                conds.append("p.barcode LIKE %s")
+                params.append(f"%{barcode}%")
+            if conds:
+                sql += " WHERE " + " AND ".join(conds)
 
         sql += " ORDER BY f.created_at DESC"
-        print("✅ SQL:", sql)
-        print("✅ PARAMS:", params)
 
-        try:
-            cursor.execute(sql, params)
-        except Exception as e:
-            print("🔥 cursor.execute 發生錯誤：", e)
-            raise        
-        try:
-            result = cursor.fetchall()
-            print("🟢 SQL 查詢結果：", result)
-        except Exception as e:
-            print("🔥 cursor.fetchall 發生錯誤：", e)
-            raise
-
+        cursor.execute(sql, params)
+        result = cursor.fetchall()
         return result
+    finally:
+        cursor.close()
+        conn.close()
 
+@router.put(
+    "/history/{history_id}",
+    summary="修改入/出庫歷史紀錄",
+)
+def update_stock_history(
+    data: StockHistoryUpdate = Body(...),
+    history_id: int = Path(..., description="要修改的記錄 ID"),
+):
+    """
+    StockHistoryUpdate (放在 backend/models/stock.py) 範例：
+
+    from pydantic import BaseModel
+    from typing import Optional, Literal
+    from decimal import Decimal
+
+    class StockHistoryUpdate(BaseModel):
+        change_type: Literal["入庫", "出庫"]
+        change_qty: int
+        in_price: Optional[Decimal] = None
+        out_price: Optional[Decimal] = None
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        if data.change_type == "入庫":
+            cursor.execute(
+                """
+                UPDATE stock_flows
+                SET change_type = %s,
+                    change_qty = %s,
+                    in_price   = %s,
+                    out_price  = NULL
+                WHERE id = %s
+                """,
+                (data.change_type, data.change_qty, data.in_price, history_id),
+            )
+        else:
+            cursor.execute(
+                """
+                UPDATE stock_flows
+                SET change_type = %s,
+                    change_qty  = %s,
+                    out_price   = %s,
+                    in_price    = NULL
+                WHERE id = %s
+                """,
+                (data.change_type, data.change_qty, data.out_price, history_id),
+            )
+
+        conn.commit()
+        return {"ok": True, "message": "更新成功"}
     except Exception as e:
-        print("🔥 查詢整體異常：", e)
-        raise HTTPException(status_code=500, detail=f"查詢錯誤：{str(e)}")
+        conn.rollback()
+        raise HTTPException(status_code=500, detail=f"更新失敗：{e}")
     finally:
         cursor.close()
         conn.close()
