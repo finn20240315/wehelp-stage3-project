@@ -157,21 +157,16 @@ document.addEventListener("DOMContentLoaded", () => {
           body: JSON.stringify(payload),
         });
 
+        // 1) 先 parse JSON，拿到 data
+        const data = await res.json();
+
         if (!res.ok) {
-          const body = await res.json();
-          if (Array.isArray(body.detail)) {
-            const msgs = body.detail
-              .map((err) => {
-                const field = err.loc[err.loc.length - 1];
-                if (field === "email") return "請輸入正確的電子郵件格式";
-                if (field === "verification_code") return "請輸入 6 位數驗證碼";
-                // 其他欄位再加對應...
-                return err.msg;
-              })
-              .join("\n");
+          // 這裡用同一個 data 變數
+          if (Array.isArray(data.detail)) {
+            const msgs = data.detail.map((err) => err.msg).join("\n");
             throw new Error(msgs);
           }
-          throw new Error(body.detail || body.message || "註冊失敗");
+          throw new Error(data.detail || data.message || "註冊失敗");
         }
 
         // 註冊成功提示
